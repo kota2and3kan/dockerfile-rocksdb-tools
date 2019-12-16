@@ -17,8 +17,8 @@ build-rocksdb-tools:
     - docker tag rocksdb-tools:latest "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest"
     - docker tag rocksdb-tools:latest "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:$VERSION"
     - docker image ls
-    - docker push rocksdb-tools:latest "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest"
-    - docker push rocksdb-tools:latest "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:$VERSION"
+    - docker push "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest"
+    - docker push "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:$VERSION"
   only:
     - web
 

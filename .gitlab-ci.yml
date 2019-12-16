@@ -28,7 +28,6 @@ test-rocksdb-tools:
     - docker pull "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest"
     - docker tag  "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest" rocksdb-tools:latest
     - docker image ls
-    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --help
     - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db --create_if_missing put a1 b1
     - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db get a1
     - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db scan

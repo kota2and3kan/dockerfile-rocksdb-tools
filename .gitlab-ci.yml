@@ -40,7 +40,7 @@ test-rocksdb-tools:
     - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db scan
     - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db batchput "multiple words key" "multiple words value"
     - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db scan
-    - ls -l /db
+    - ls -l $PWD/db
     - docker run --rm -v $PWD/db:/db rocksdb-tools:latest sst_dump --file=/db/ --command=scan
   only:
     - web

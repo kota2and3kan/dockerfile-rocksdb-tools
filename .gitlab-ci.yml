@@ -1,0 +1,47 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+
+stages:
+  - build
+  - test
+
+build-rocksdb-tools:
+  stage: build
+  script:
+    - docker build -t "rocksdb-tools:latest" ./rocksdb-tools
+    - docker tag rocksdb-tools:latest "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest"
+    - docker tag rocksdb-tools:latest "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:$VERSION"
+    - docker image ls
+    - docker push rocksdb-tools:latest "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest"
+    - docker push rocksdb-tools:latest "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:$VERSION"
+  only:
+    - web
+
+test-rocksdb-tools:
+  stage: test
+  script:
+    - docker pull "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest"
+    - docker tag  "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rocksdb-tools:latest" rocksdb-tools:latest
+    - docker image ls
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --help
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db --create_if_missing put a1 b1
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db get a1
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db scan
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db scan --hex
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db put --key_hex 0x6132 b2
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db scan
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db get --value_hex a2
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db get --hex 0x6131
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db batchput a3 b3 a4 b4
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db scan
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db batchput "multiple words key" "multiple words value"
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest ldb --db=/db scan
+    - ls -l /db
+    - docker run --rm -v $PWD/db:/db rocksdb-tools:latest sst_dump --file=/db/ --command=scan
+  only:
+    - web

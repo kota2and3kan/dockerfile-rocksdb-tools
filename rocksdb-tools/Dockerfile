@@ -3,7 +3,7 @@ RUN set -x \
  && apt update > /dev/null \
  && apt install -y git cmake g++ libgflags-dev libsnappy-dev zlib1g-dev libbz2-dev liblz4-dev libzstd-dev > /dev/null \
  && cd /root \
- && git clone -b v6.4.6 https://github.com/facebook/rocksdb.git > /dev/null \
+ && git clone -b v6.6.3 https://github.com/facebook/rocksdb.git > /dev/null \
  && mkdir -p /root/rocksdb/build \
  && cd /root/rocksdb/build \
  && cmake .. > /dev/null \
@@ -20,6 +20,6 @@ RUN set -x \
  && apt-get -y clean > /dev/null \
  && rm -rf /var/lib/apt/lists/* \
  && mkdir -p /root/rocksdb/build 
-COPY --from=builder-rocksdb-tools /root/rocksdb/build/librocksdb.so.6.4.6 /root/rocksdb/build/librocksdb.so.6
+COPY --from=builder-rocksdb-tools /root/rocksdb/build/librocksdb.so.6.6.3 /root/rocksdb/build/librocksdb.so.6
 COPY --from=builder-rocksdb-tools /root/rocksdb-tools/* /usr/local/bin/
 CMD ["/bin/bash"]

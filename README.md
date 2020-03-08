@@ -3,7 +3,7 @@ Dockerfile for build RocksDB tools (ldb and sst_dump).
 
 
 ## Note
-For test local or development envronment.  
+For test local or development environment.  
 Not for production.
 
 

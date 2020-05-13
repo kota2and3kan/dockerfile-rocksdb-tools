@@ -1,4 +1,4 @@
-name: Build RocksDB tools (ldb and sst_dump).
+name: Build RocksDB tools (ldb and sst_dump)
 on:
   push:
     branches:

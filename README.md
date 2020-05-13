@@ -1,4 +1,5 @@
 # dockerfile-rocksdb-tools
+![Build RocksDB tools (ldb and sst_dump)](https://github.com/kota2and3kan/dockerfile-rocksdb-tools/workflows/Build%20RocksDB%20tools%20(ldb%20and%20sst_dump)/badge.svg)  
 Dockerfile for build RocksDB tools (ldb and sst_dump).
 
 
